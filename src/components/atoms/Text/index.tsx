@@ -1,29 +1,33 @@
-import { Text as RNText, StyleProp, TextStyle } from "react-native";
-import { TextProps } from "./types";
-import { setSizeByTextType, setWeightText } from "./utils";
+import { Text as RNPText } from 'react-native-paper';
+import { TextProps } from './types';
+import { StyleProp, TextStyle } from 'react-native';
+import { setSizeByTextType, setWeightText } from './utils';
+import { useThemeStore } from '@stores/theme-store';
 
 const Text = ({
-    children,
-    size = 'medium_1',
-    weight = 'regular',
-    color,
-    numberOfLine,
-    style,
-}: TextProps) => {
+	children,
+	size = 'medium_1',
+	weight = 'regular',
+	numberOfLine = 1,
+	color,
+	style
+}:TextProps) => {
 
-    const stylesProps: StyleProp<TextStyle> = {
-        fontSize: setSizeByTextType(size),
-        color,
-        fontWeight: setWeightText(weight)
-    }
+	const { theme } = useThemeStore();
 
-    return (
-        <RNText
-            numberOfLines={numberOfLine}
-            style={[{ ...stylesProps, ...style }]}
-        >
-            {children}
-        </RNText>
+	const textStyles: StyleProp<TextStyle> = {
+		fontSize: setSizeByTextType(size),
+		fontWeight: setWeightText(weight),
+		color: color ?? theme.colors.black,
+	}
+
+	return (
+			<RNPText
+				numberOfLines={numberOfLine}
+				style={ [textStyles, style] }
+			>
+				{ children }
+			</RNPText>
     )
 }
 

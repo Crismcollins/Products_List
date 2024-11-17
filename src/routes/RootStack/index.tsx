@@ -6,12 +6,20 @@ import ProductDetailsScreen from '@components/screens/ProductDetails';
 import LoginScreen from '@components/screens/Login';
 import { useNavigation } from '@react-navigation/native';
 import { useAuthStore } from '@stores/auth-store';
+import { useDataStore } from '@stores/data-store';
+import { useThemeStore } from '@stores/theme-store';
+import { screensOptions } from './config';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootStack = () => {
+  const theme = useThemeStore( state => state.theme);
+  const loading = useDataStore(state => state.loading);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const screenOptions = screensOptions(loading, theme.colors);
 
   useEffect(() => {
     if (isAuthenticated)
@@ -21,7 +29,7 @@ export const RootStack = () => {
   }, [isAuthenticated])
 
   return (
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName='Login' screenOptions={ screenOptions }>
         {isAuthenticated ? (
           <Stack.Group>
             <Stack.Screen name='ProductsList' component={ProductsListScreen} />

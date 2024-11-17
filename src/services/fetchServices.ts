@@ -4,7 +4,7 @@ import {
   usePostQuery,
 } from '@hooks/useRequest'
 
-export const authLogin = async () => {
+export const authLogin = () => {
   return usePostQuery('Login', '/auth/login')
 }
 
@@ -14,4 +14,8 @@ export const getListProducts = (options?: useGetQueryOptions) => {
 
 export const getProductById = (id: number, options?: useGetQueryOptions) => {
   return useGetQuery('Get Product by id', `/products/${id}`, options)
+}
+
+export const getAllUsers = () => {
+  return useGetQuery('Get all users', '/users');
 }

@@ -41,5 +41,3 @@ export const setSizeByTextType = (size: TextType): number => {
     else
         return 8;
 }
-
-export const isTextType = (size: TextType) => typeof size === 'string';

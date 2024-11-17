@@ -62,26 +62,19 @@ export const usePostQuery = (
     mutationKey: [name],
     mutationFn: async (values: any) => {
       try {
-        return await axios.post(`${baseUrl}${url}`, values, {
-          headers,
-        });
+        return await axios.post(`${baseUrl}${url}`, values, { headers });
       } catch (error: unknown) {
         const axiosError = error as AxiosError;
 
         if (axiosError.response && axiosError.response.status === 401) {
-          return await axios.post(`${baseUrl}${url}`, values, {
-            headers: {
-              ...headers,
-            },
-          });
+          return await axios.post(`${baseUrl}${url}`, values, { headers });
         }
         throw axiosError;
       }
     },
     networkMode: 'always',
     ...options,
-  }
-  );
+  });
 };
 
 export const usePatchQuery = (
