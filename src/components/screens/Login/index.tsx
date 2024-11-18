@@ -1,61 +1,20 @@
+import React from 'react'
 import { View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useAuthStore } from '@stores/auth-store';
-import { authLogin } from '@services/fetchServices';
 import TextInput from '@components/molecules/TextInput';
 import HelperText from '@components/atoms/HelperText';
 import Card from '@components/molecules/Card';
-import { createStyles } from './style';
-import { useThemeStore } from '@stores/theme-store';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { LoginRequest, LoginResponse } from './types';
+import useLogin from './useLogin';
 
 const LoginScreen = () => {
-  const [formData, setFormData] = useState<LoginRequest>({} as LoginRequest);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
-
-  const login = useAuthStore(state => state.login);
-  const setToken = useAuthStore(state => state.setToken);
-
-  const { setItem } = useAsyncStorage('token');
   
-  const { mutate: handleAuthLogin, isPending } = authLogin();
-  
-  const { theme } = useThemeStore();
-  
-  const styles = createStyles(theme.colors);
-  
-  const handleChangeText = (text: string, type: 'username' | 'password') => {
-    if (type === 'username')
-      setFormData({ ...formData, username: text.toLowerCase() })
-    else
-      setFormData({ ...formData, password: text.toLowerCase() })
-  }
-
-  const handleLogin = () => {
-
-    handleAuthLogin(formData, {
-      onSuccess: async (data) => {
-        const response: LoginResponse = data.data;
-        const token = response.token;
-        setToken(token);
-        await setItem(token);
-        login();
-      },
-      onError: (error) => {
-        const message = error.response?.data as string;
-        setErrorMessage(message);
-      }
-    })
-  }
-
-  useEffect(() => {
-    if (!formData.username || !formData.password)
-      setButtonDisabled(true);
-    else
-      setButtonDisabled(false);
-  }, [formData.username, formData.password])
+  const {
+     styles,
+     buttonDisabled,
+     errorMessage,
+     isPending,
+     handleChangeText,
+     handleLogin
+  } = useLogin();
 
   return (
     <View style={styles.container}>
@@ -89,4 +48,4 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default LoginScreen;
