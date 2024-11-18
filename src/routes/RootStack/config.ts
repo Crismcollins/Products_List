@@ -8,7 +8,7 @@ export const screensOptions = (loading: boolean, colors: ColorsType): NativeStac
   return {
     headerShown: !loading,
     ...headersStyle,
-    headerTitleAlign: 'center'
+    headerTitleAlign: 'center',
   }
 }
 
@@ -27,6 +27,6 @@ const styleHeader = (colors: ColorsType): HeaderStyleOptions => {
 
 const styleHeaderTitle = (colors: ColorsType): HeaderTitleOptions => {
   return {
-    color: colors.white
+    color: colors.white,
   }
 }

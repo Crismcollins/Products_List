@@ -6,6 +6,7 @@ export type TextProps = {
     size?: TextType;
     weight?: FontWeightTypes;
     color?: string;
+    ellipsizeMode?: "head" | "middle" | "tail" | "clip" | undefined;
     numberOfLine?: number;
     style?: TextStyle;
 }

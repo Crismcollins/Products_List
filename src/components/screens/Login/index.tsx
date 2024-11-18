@@ -1,13 +1,14 @@
 import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useAuthStore } from '@stores/auth-store';
-import { authLogin, getAllUsers } from '@services/fetchServices';
+import { authLogin } from '@services/fetchServices';
 import TextInput from '@components/molecules/TextInput';
-import { LoginRequest } from '@services/types';
 import HelperText from '@components/atoms/HelperText';
 import Card from '@components/molecules/Card';
 import { createStyles } from './style';
 import { useThemeStore } from '@stores/theme-store';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { LoginRequest, LoginResponse } from './types';
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState<LoginRequest>({} as LoginRequest);
@@ -15,27 +16,31 @@ const LoginScreen = () => {
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
   const login = useAuthStore(state => state.login);
+  const setToken = useAuthStore(state => state.setToken);
 
-  const { data } = getAllUsers();
+  const { setItem } = useAsyncStorage('token');
+  
   const { mutate: handleAuthLogin, isPending } = authLogin();
   
   const { theme } = useThemeStore();
-
+  
   const styles = createStyles(theme.colors);
-  console.log(data?.data)
+  
   const handleChangeText = (text: string, type: 'username' | 'password') => {
     if (type === 'username')
-      setFormData({ ...formData, username: text })
+      setFormData({ ...formData, username: text.toLowerCase() })
     else
-      setFormData({ ...formData, password: text })
+      setFormData({ ...formData, password: text.toLowerCase() })
   }
 
   const handleLogin = () => {
 
     handleAuthLogin(formData, {
-      onSuccess: (data) => {
-        console.log(data)
-        console.log(data.data)
+      onSuccess: async (data) => {
+        const response: LoginResponse = data.data;
+        const token = response.token;
+        setToken(token);
+        await setItem(token);
         login();
       },
       onError: (error) => {
@@ -55,7 +60,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Card
-        title='Iniciar sesión'
+        title='Ingresar'
         submitButtonText='Login'
         submitDisabled={buttonDisabled || isPending}
         submitIsLoading= {isPending}

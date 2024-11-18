@@ -9,7 +9,7 @@ interface Actions {
 }
 
 export const useDataStore = create<State & Actions>()(( set ) => ({
-  loading: false,
+  loading: true,
 
   setLoading: (isLoading: boolean) => set({ loading: isLoading }),
 }));

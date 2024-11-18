@@ -32,12 +32,15 @@ const Card = ({
   const styles = createStyles(theme.colors);
 
   return (
-    <RNPCard contentStyle={styles.container}>
-      <RNPCard.Title title={title} titleStyle={styles.title} />
+    <RNPCard contentStyle={styles.container} elevation={0}>
+      { title && <RNPCard.Title title={title} titleStyle={styles.title} />}
+
       <RNPCard.Content style={styles.content}>
         {children}
       </RNPCard.Content>
-      <RNPCard.Actions>
+
+      { (onSubmit || onCancel) && 
+      (<RNPCard.Actions>
         <View style={ styles.footer }>
           {onSubmit && (
             <Button
@@ -57,6 +60,7 @@ const Card = ({
           )}
         </View>
       </RNPCard.Actions>
+      )}
     </RNPCard>
   )
 }

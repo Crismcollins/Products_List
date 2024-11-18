@@ -48,6 +48,7 @@ export const useGetQuery = (
       }
     },
     networkMode: 'always',
+    gcTime: 0,
     ...options
   })
 }

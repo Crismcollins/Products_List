@@ -8,8 +8,9 @@ const Text = ({
 	children,
 	size = 'medium_1',
 	weight = 'regular',
-	numberOfLine = 1,
+	numberOfLine = 0,
 	color,
+	ellipsizeMode,
 	style
 }:TextProps) => {
 
@@ -23,6 +24,7 @@ const Text = ({
 
 	return (
 			<RNPText
+				ellipsizeMode={ellipsizeMode}
 				numberOfLines={numberOfLine}
 				style={ [textStyles, style] }
 			>

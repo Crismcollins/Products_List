@@ -1,17 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { FlatList } from 'react-native'
 import React from 'react'
+import { ListProps } from './types';
 
-type Props = {
-
-}
-
-const List = ({
-  
-}: Props) => {
+const List = <T,> ({
+  data,
+  renderItem,
+  keyExtractor,
+  contentContainerStyle,
+}: ListProps<T>) => {
   return (
-    <View>
-      <Text>List</Text>
-    </View>
+    <FlatList
+      { ...{ data, renderItem, keyExtractor, contentContainerStyle } }
+      contentContainerStyle={{ gap: 16 }}
+    />
   )
 }
 

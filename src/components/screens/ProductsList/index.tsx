@@ -1,29 +1,44 @@
-import { Button, Text, View } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
-import { RootStackParamList } from '@routes/types';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-import { useAuthStore } from '@stores/auth-store';
+import { ProductsListProps } from './types';
+import useProductsList from './useProductsList';
+import LoadingFullScreen from '@components/molecules/LoadingFullScreen';
+import List from '@components/organisms/List';
+import ListItem from '@components/molecules/ListItem';
+import ProductItem from '@components/specific/ProductItem';
+import RenderMessage from '@components/specific/RenderMessage';
 
-type Props = {}
+const ProductsListScreen: React.FC<ProductsListProps> = ({ navigation }) => {
 
-const ProductsListScreen = (props: Props) => {
+  const {
+    products,
+    loading,
+    isError,
+    styles,
+    handleNavigateToProductList,
+  } = useProductsList({ navigation });
+  
+  if (isError) return <RenderMessage message='Ocurrió un error mientras intentamos obtener los productos, por favor intentalo nuevamente.' />
 
-  const logout = useAuthStore(state => state.logout);
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  if (loading) return <LoadingFullScreen />
 
-  const handleNavigateToProductList = () => navigation.navigate('ProductDetails', { id: 1 });
+  if (!products || products?.length === 0) return <RenderMessage message='Ya no nos quedan productos =(' />
 
   return (
-    <View>
-      <Text>ProductsListScreen</Text>
-      <Button
-        title='Go to details product screen'
-        onPress={handleNavigateToProductList}
-      />
-      <Button
-        title='Logout'
-        onPress={logout}
+    <View style={ styles.container }>
+      <List
+        data={products}
+        keyExtractor={product => product.title}
+        renderItem={({ item, index }) =>
+          <ListItem key={'item-' + index} onPress={() => handleNavigateToProductList(item.id)}>
+            <ProductItem
+              key={'product-item-' + index}
+              title={item.title}
+              image={item.image}
+              price={item.price}
+            />
+          </ListItem>
+        }
       />
     </View>
   )
