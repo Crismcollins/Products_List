@@ -17,12 +17,15 @@ npm install
 o
 yarn 
 
-6. instalar los pods con los comandos:
+6. Configurar cocoapods con el bundler:
+bundler install
+
+7. instalar los pods con los comandos:
 cd ios && pod install && cd ..
 o
 yarn pods
 
-7. Ejecutar el proyecto:
+8. Ejecutar el proyecto:
 yarn start
 o
 yarn ios
@@ -33,7 +36,7 @@ username: donero
 password: ewedon
 
 FAQS
-1. Probablemente cuando instales los pods, tengas un mensaje de error similar a este:
+1. Es posible que cuando instales los pods, tengas un mensaje de error similar a este:
 "undefined method 'exist' for File:Class"
 En tal caso, debes instalar la versión de ruby 3.2.2 en tu computadora, y la version de bundler compatible para dicha versión:
 
@@ -55,13 +58,27 @@ rbenv local
 f. Instalar las gem del bundler:
 bundler install
 
+Para saber si este comando se ejecutó correctamente, debe haberse creado la carpeta "vendor" en la raíz del proyecto.
+
 g. Instalar los pods
 bundler exec pod install --project-directory=ios
 
 En caso de que quieras ejecutar con otra versión de ruby en tu computadora:
-a. puedes dirigirte al archivo .ruby-version en el directorio raíz del proyecto y cambiar la versión que gustes.
+a. puedes dirigirte al archivo .ruby-version en el directorio raíz del proyecto y cambiar a la versión que gustes.
 b. En el Gemfile debes apuntar a la versión de cocoapods en la que estas trabajando.
 c. Instalar el bundler compatible con la versión de ruby y cocoapods que desees:
 gem install bundler -v x.x.xx
 
-2. El login es sensible a mayúsculas, por lo que debes asegurarte de respetarlar al momento de hacer login.
+2. El login es sensible a mayúsculas, por lo que debes asegurarte de respetarlas al momento de hacer login.
+
+3. Si la app se congela al buildear para iOS, en un log similar a este:
+"info Building (using "xcodebuild -workspace ProductsList.xcworkspace -configuration Debug -scheme ProductsList -destination id=ID_DEVICE")"
+Es probable que no se haya ejecutado el comando:
+bundler install
+
+o que no este correctamente configurado  el entorno de la computadora con cocoapods.
+Para poder configurarlo, hacer los puntos 1.2 y 1.3 del siguiente enlace:
+https://dev.to/retyui/fix-a-pod-install-error-undefined-method-exist-for-fileclass-react-native-24ke
+
+e instalar los pods del proyecto con:
+bundler exec pod install --project-directory=ios

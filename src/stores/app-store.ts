@@ -8,7 +8,7 @@ interface Actions {
   setLoading: (isLoading: boolean) => void;
 }
 
-export const useDataStore = create<State & Actions>()(( set ) => ({
+export const useAppStore = create<State & Actions>()(( set ) => ({
   loading: true,
 
   setLoading: (isLoading: boolean) => set({ loading: isLoading }),

@@ -3,7 +3,7 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStack } from '@routes/RootStack';
 import { useAuthStore } from '@stores/auth-store';
-import { useDataStore } from '@stores/data-store';
+import { useAppStore } from '@stores/app-store';
 import { useThemeStore } from '@stores/theme-store';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,8 +21,8 @@ function App(): React.JSX.Element {
   const login = useAuthStore(state => state.login);
   const setToken = useAuthStore(state => state.setToken);
 
-  const loading = useDataStore(state => state.loading);
-  const setLoading = useDataStore(state => state.setLoading);
+  const loading = useAppStore(state => state.loading);
+  const setLoading = useAppStore(state => state.setLoading);
 
   const deviceTheme = useColorScheme();
 

@@ -5,7 +5,7 @@ import ProductsListScreen from '@components/screens/ProductsList';
 import ProductDetailsScreen from '@components/screens/ProductDetails';
 import LoginScreen from '@components/screens/Login';
 import { useAuthStore } from '@stores/auth-store';
-import { useDataStore } from '@stores/data-store';
+import { useAppStore } from '@stores/app-store';
 import { useThemeStore } from '@stores/theme-store';
 import { screensOptions } from '@routes/RootStack/config';
 
@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootStack = () => {
   const theme = useThemeStore(state => state.theme);
-  const loading = useDataStore(state => state.loading);
+  const loading = useAppStore(state => state.loading);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   const screenOptions = screensOptions(loading, theme.colors);
